@@ -106,7 +106,7 @@ function Home() {
         );
       }
     })}
-    {loading && <p className="text-center py-4 animate-pulse">Loading...</p>}
+    {loading && <p className="text-center py-4 animate-pulse dark:text-white text-gray-800">Loading...</p>}
     {error && <p className="text-center text-red-500 py-4">{error}</p>}
     {showScrollTop && (
       <button
