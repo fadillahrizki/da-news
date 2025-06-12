@@ -28,8 +28,8 @@ function Settings() {
     return (
         <ul className="divide-y divide-gray-200 dark:divide-gray-700 px-4">
             <li className="py-3">
-                <div className="flex items-center justify-between">
-                    <div className="flex gap-3 items-center">
+                <div className="sm:flex items-center justify-between">
+                    <div className="flex gap-3 items-center mb-5 sm:mb-0">
                         <div className="p-1 border rounded-xl bg-white dark:bg-gray-800 dark:border-white">
                             <SunIcon className="w-6 h-6 text-gray-800 dark:text-white"/>
                         </div>
