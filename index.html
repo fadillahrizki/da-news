@@ -17,11 +17,10 @@
       } else {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark')
-            localStorage.setItem('color-theme', 'dark')
         } else {
-          document.documentElement.classList.add('light')
-            localStorage.setItem('color-theme', 'light')
+            document.documentElement.classList.add('light')
         }
+        localStorage.setItem('color-theme', 'device')
       }
     </script>
   </head>
