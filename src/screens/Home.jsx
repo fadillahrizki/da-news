@@ -16,11 +16,11 @@ function Home() {
   const [dateEnd, setDateEnd] = useState(new Date())
 
   const handleDateStartChange = (el) => {
-    setDateStart(el.target.value)
+    setDateStart(new Date(el.target.value))
   }
 
   const handleDateEndChange = (el) => {
-    setDateEnd(el.target.value)
+    setDateEnd(new Date(el.target.value))
   }
 
   const formatDate = (date) => date.getFullYear() + '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()))
