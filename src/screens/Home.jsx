@@ -75,14 +75,14 @@ function Home() {
         // {
         //   params: { _limit: 10, _page: pageNum, beginningDate: dateStart, endingDate: dateEnd },
         // }
-        'https://api.thenewsapi.com/v1/news/all',
+        'https://eventregistry.org/api/v1/article/getArticles',
         {
           params: { 
-            limit: 10, 
-            page: pageNum, 
-            published_after: formatDate(dateStart), 
-            published_before: formatDate(dateEnd), 
-            api_token:'jBGHsD4YX7vELb9Zw3U2K7sJUxKMzrQC7Pvgbcwy'
+            articlesCount: 10, 
+            articlesPage: pageNum, 
+            dateStart: formatDate(dateStart), 
+            dateEnd: formatDate(dateEnd), 
+            apiKey:'63b8739f-b6c8-4e0d-ae93-2d782f2a2647'
           },
         }
         // 'https://newsapi.org/v2/everything?q=bitcoin',
@@ -97,11 +97,11 @@ function Home() {
         // }
       );
       if(isFiltered) {
-        setPosts(res.data.data);
+        setPosts(res.data.articles.results);
       } else {
-        setPosts((prev) => [...prev, ...res.data.data]);
+        setPosts((prev) => [...prev, ...res.data.articles.results]);
       }
-      if (res.data.data.length < 10) {
+      if (res.data.articles.results.length < 10) {
         setHasMore(false);
       }
     } catch (err) {
@@ -124,17 +124,17 @@ function Home() {
             className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
             onClick={()=>window.open(post.url, '_blank')}
           >
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source}</h6>
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.published_at).toLocaleString()}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
           </div>
         );
       } else {
         return (
           <div key={index} className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" onClick={()=>window.open(post.url, '_blank')}>
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source}</h6>
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.published_at).toLocaleString()}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
           </div>
         );
       }
