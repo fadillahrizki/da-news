@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import { ArrowRightCircleIcon, ArrowTopRightOnSquareIcon, ArrowUpIcon } from '@heroicons/react/24/solid';
+import { ArrowUpIcon } from '@heroicons/react/24/solid';
+import Filter from '../components/Filter';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -10,6 +11,17 @@ function Home() {
   const [error, setError] = useState(null);
 
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const [dateStart, setDateStart] = useState('')
+  const [dateEnd, setDateEnd] = useState('')
+
+  const handleDateStartChange = (el) => {
+    setDateStart(el.target.value)
+  }
+
+  const handleDateEndChange = (el) => {
+    setDateEnd(el.target.value)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +34,10 @@ function Home() {
   useEffect(() => {
     fetchPosts(page);
   }, [page]);
+
+  useEffect(() => {
+    fetchPosts(page, true);
+  }, [dateStart, dateEnd]);
 
   useMemo(() => {
     return posts.map((post) => ({
@@ -49,17 +65,31 @@ function Home() {
     [loading, hasMore]
   );
 
-  const fetchPosts = async (pageNum) => {
+  const fetchPosts = async (pageNum, isFiltered = false) => {
     setLoading(true);
     try {
       const res = await axios.get(
-        'https://jsonplaceholder.typicode.com/posts',
+        // 'https://jsonplaceholder.typicode.com/posts',
+        // {
+        //   params: { _limit: 10, _page: pageNum, beginningDate: dateStart, endingDate: dateEnd },
+        // }
+        'https://newsapi.org/v2/everything?q=bitcoin',
         {
-          params: { _limit: 10, _page: pageNum },
+          params: { 
+            pageSize: 10, 
+            page: pageNum, 
+            from: dateStart, 
+            to: dateEnd, 
+            apiKey:'73406be4b7f447d8b700cacb43e81c92'
+          },
         }
       );
-      setPosts((prev) => [...prev, ...res.data]);
-      if (res.data.length < 10) {
+      if(isFiltered) {
+        setPosts(res.data.articles);
+      } else {
+        setPosts((prev) => [...prev, ...res.data.articles]);
+      }
+      if (res.data.articles.length < 10) {
         setHasMore(false);
       }
     } catch (err) {
@@ -70,38 +100,29 @@ function Home() {
     }
   };
 
-  const debounce = (func, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => func(...args), delay);
-    };
-  };
-
-  debounce(() => {
-    setPage((prev) => prev + 1)
-    console.log("debounce")
-  }, 500);
-
   return (
   <div className="">
+    <Filter dateStart={dateStart} dateEnd={dateEnd} handleDateStartChange={handleDateStartChange} handleDateEndChange={handleDateEndChange}/>
     {posts.map((post, index) => {
       if (posts.length === index + 1) {
         return (
           <div
             ref={lastPostElementRef}
             key={index}
-            className="border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
+            className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
+            onClick={()=>window.open(post.url, '_blank')}
           >
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.name}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{post.body}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.publishedAt).toLocaleString()}</p>
           </div>
         );
       } else {
         return (
-          <div key={index} className="border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200">
+          <div key={index} className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" onClick={()=>window.open(post.url, '_blank')}>
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.name}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{post.body}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.publishedAt).toLocaleString()}</p>
           </div>
         );
       }
