@@ -12,8 +12,8 @@ function Home() {
 
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const [dateStart, setDateStart] = useState('')
-  const [dateEnd, setDateEnd] = useState('')
+  const [dateStart, setDateStart] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1))
+  const [dateEnd, setDateEnd] = useState(new Date())
 
   const handleDateStartChange = (el) => {
     setDateStart(el.target.value)
@@ -22,6 +22,8 @@ function Home() {
   const handleDateEndChange = (el) => {
     setDateEnd(el.target.value)
   }
+
+  const formatDate = (date) => date.getFullYear() + '-' + ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()))
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,23 +75,33 @@ function Home() {
         // {
         //   params: { _limit: 10, _page: pageNum, beginningDate: dateStart, endingDate: dateEnd },
         // }
-        'https://newsapi.org/v2/everything?q=bitcoin',
+        'https://api.thenewsapi.com/v1/news/all',
         {
           params: { 
-            pageSize: 10, 
+            limit: 10, 
             page: pageNum, 
-            from: dateStart, 
-            to: dateEnd, 
-            apiKey:'73406be4b7f447d8b700cacb43e81c92'
+            published_after: formatDate(dateStart), 
+            published_before: formatDate(dateEnd), 
+            api_token:'jBGHsD4YX7vELb9Zw3U2K7sJUxKMzrQC7Pvgbcwy'
           },
         }
+        // 'https://newsapi.org/v2/everything?q=bitcoin',
+        // {
+        //   params: { 
+        //     pageSize: 10, 
+        //     page: pageNum, 
+        //     from: dateStart, 
+        //     to: dateEnd, 
+        //     apiKey:'pub_085d7819a6e94ba7b67ba113bb14e981'
+        //   },
+        // }
       );
       if(isFiltered) {
-        setPosts(res.data.articles);
+        setPosts(res.data.data);
       } else {
-        setPosts((prev) => [...prev, ...res.data.articles]);
+        setPosts((prev) => [...prev, ...res.data.data]);
       }
-      if (res.data.articles.length < 10) {
+      if (res.data.data.length < 10) {
         setHasMore(false);
       }
     } catch (err) {
@@ -102,7 +114,7 @@ function Home() {
 
   return (
   <div className="">
-    <Filter dateStart={dateStart} dateEnd={dateEnd} handleDateStartChange={handleDateStartChange} handleDateEndChange={handleDateEndChange}/>
+    <Filter dateStart={formatDate(dateStart)} dateEnd={formatDate(dateEnd)} handleDateStartChange={handleDateStartChange} handleDateEndChange={handleDateEndChange}/>
     {posts.map((post, index) => {
       if (posts.length === index + 1) {
         return (
@@ -112,17 +124,17 @@ function Home() {
             className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
             onClick={()=>window.open(post.url, '_blank')}
           >
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.name}</h6>
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.publishedAt).toLocaleString()}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.published_at).toLocaleString()}</p>
           </div>
         );
       } else {
         return (
           <div key={index} className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" onClick={()=>window.open(post.url, '_blank')}>
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.name}</h6>
+            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source}</h6>
             <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.publishedAt).toLocaleString()}</p>
+            <p className="text-gray-600 dark:text-gray-400">{new Date(post.published_at).toLocaleString()}</p>
           </div>
         );
       }
