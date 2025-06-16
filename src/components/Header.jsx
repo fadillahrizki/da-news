@@ -32,7 +32,7 @@ function Header() {
           {currentPath.startsWith("/detail") && id ? (
             <div className="flex items-center justify-between">
               <Link to="/" className="text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-300">
-                <ChevronLeftIcon className="w-6 h-6" />
+                <ChevronLeftIcon className="w-5 h-5" />
                 </Link>
               <span className="text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-white">Detail</span>
               <span></span>
