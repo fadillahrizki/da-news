@@ -40,7 +40,7 @@ function Detail() {
     {error && <p className="text-center text-red-500 py-4">{error}</p>}
     {post && (
       <div>
-        <img loading='lazy' src={post.image ? post.image : ('https://placehold.co/600x400?text='+post.title)} alt={post.title} className="w-full h-64 object-cover rounded-lg" />
+        <img loading='lazy' src={post.image ? post.image : ('https://placehold.co/600x400?text='+post.title)} alt={post.title} className="w-full h-64 object-cover rounded-lg object-center" />
         <div className="flex items-center justify-between my-2">
           <span className="text-sm text-gray-500 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</span>
           <span className="text-sm text-gray-500 dark:text-gray-400">{post.authors.length > 0 ? post.authors.map((author, index) => (
