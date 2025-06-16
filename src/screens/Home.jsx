@@ -35,11 +35,11 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    fetchPosts(page);
+    fetchPosts();
   }, [page]);
 
   useEffect(() => {
-    fetchPosts(page, true);
+    fetchPosts(true);
   }, [dateStart, dateEnd]);
 
   useMemo(() => {
@@ -53,22 +53,21 @@ function Home() {
 
   const lastPostElementRef = useCallback(
     (node) => {
-      if (loading) return;
+      if (loading || !hasMore) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
+          if (entries[0].isIntersecting) {
             setPage((prevPage) => prevPage + 1);
           }
-        },
-        { threshold: 1.0 }
+        }
       );
       if (node) observer.current.observe(node);
     },
     [loading, hasMore]
   );
 
-  const fetchPosts = async (pageNum, isFiltered = false) => {
+  const fetchPosts = async (isFiltered = false) => {
     setLoading(true);
     try {
       const res = await axios.get(
@@ -76,7 +75,7 @@ function Home() {
         {
           params: { 
             articlesCount: 10, 
-            articlesPage: pageNum, 
+            articlesPage: page, 
             dateStart: formatDate(dateStart), 
             dateEnd: formatDate(dateEnd), 
             apiKey:'63b8739f-b6c8-4e0d-ae93-2d782f2a2647',
@@ -103,33 +102,17 @@ function Home() {
   return (
   <div className="">
     <Filter dateStart={formatDate(dateStart)} dateEnd={formatDate(dateEnd)} handleDateStartChange={handleDateStartChange} handleDateEndChange={handleDateEndChange}/>
-    {posts.map((post, index) => {
-      if (posts.length === index + 1) {
-        return (
-          <Link key={index} to={`/detail/${post.uri}`} ref={lastPostElementRef}>
-            <div
-              className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
-            >
-              <p className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</p>
-              <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-              <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
-            </div>
-          </Link>
-        );
-      } else {
-        return (
-          <Link key={index} to={`/detail/${post.uri}`}>
-            <div 
-              className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" 
-            >
-              <p className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</p>
-              <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-              <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
-            </div>
-          </Link>
-        );
-      }
-    })}
+    {posts.map((post, index) => (
+      <Link key={index} to={`/detail/${post.uri}`} ref={index === posts.length - 1 ? lastPostElementRef : null}>
+        <div
+          className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
+        >
+          <p className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</p>
+          <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
+        </div>
+      </Link>
+    ))}
     {loading && <p className="text-center py-4 animate-pulse dark:text-white text-gray-800">Loading...</p>}
     {error && <p className="text-center text-red-500 py-4">{error}</p>}
     {showScrollTop && (
