@@ -82,7 +82,8 @@ function Home() {
             articlesPage: pageNum, 
             dateStart: formatDate(dateStart), 
             dateEnd: formatDate(dateEnd), 
-            apiKey:'63b8739f-b6c8-4e0d-ae93-2d782f2a2647'
+            apiKey:'63b8739f-b6c8-4e0d-ae93-2d782f2a2647',
+            lang: 'ind'
           },
         }
         // 'https://newsapi.org/v2/everything?q=bitcoin',
