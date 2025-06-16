@@ -124,7 +124,7 @@ function Home() {
             <div
               className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
             >
-              <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
+              <p className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</p>
               <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
               <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
             </div>
@@ -136,7 +136,7 @@ function Home() {
             <div 
               className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" 
             >
-              <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
+              <p className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</p>
               <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
               <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
             </div>
