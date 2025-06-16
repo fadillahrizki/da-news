@@ -14,6 +14,7 @@ function App() {
       <Header page={pages[page]}/>
       <div className="py-16 bg-white dark:bg-gray-900 min-h-screen">
         {page == 0 ? <Home/> : <Settings/>}
+        <slot></slot>
       </div>
       <Navigation activePage={page} setPage={setPage}/>
     </>

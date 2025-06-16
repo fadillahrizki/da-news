@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import { ArrowUpIcon } from '@heroicons/react/24/solid';
+import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import Filter from '../components/Filter';
+import { Link } from 'react-router';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -119,24 +120,27 @@ function Home() {
     {posts.map((post, index) => {
       if (posts.length === index + 1) {
         return (
-          <div
-            ref={lastPostElementRef}
-            key={index}
-            className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
-            onClick={()=>window.open(post.url, '_blank')}
-          >
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
-            <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
-          </div>
+          <Link key={index} to={`/detail/${post.uri}`} ref={lastPostElementRef}>
+            <div
+              className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200"
+            >
+              <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
+              <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
+            </div>
+          </Link>
         );
       } else {
         return (
-          <div key={index} className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" onClick={()=>window.open(post.url, '_blank')}>
-            <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
-            <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
-          </div>
+          <Link key={index} to={`/detail/${post.uri}`}>
+            <div 
+              className="cursor-pointer border-b p-4 hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-200" 
+            >
+              <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
+              <h2 className="text-md md:text-xl font-medium text-gray-800 dark:text-white">{post.title}</h2>
+              <p className="text-gray-600 dark:text-gray-400">{new Date(post.dateTime).toLocaleString()}</p>
+            </div>
+          </Link>
         );
       }
     })}
@@ -147,7 +151,7 @@ function Home() {
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className="fixed bottom-16 right-4 p-4 bg-white text-gray-800 border border-gray-800 dark:border-gray-100 dark:bg-gray-800 dark:text-white rounded-full z-100 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
       >
-        <ArrowUpIcon className="w-4 h-4"/>
+        <ChevronUpIcon className="w-4 h-4"/>
       </button>
     )}
   </div>
