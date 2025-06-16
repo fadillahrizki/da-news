@@ -72,10 +72,6 @@ function Home() {
     setLoading(true);
     try {
       const res = await axios.get(
-        // 'https://jsonplaceholder.typicode.com/posts',
-        // {
-        //   params: { _limit: 10, _page: pageNum, beginningDate: dateStart, endingDate: dateEnd },
-        // }
         'https://eventregistry.org/api/v1/article/getArticles',
         {
           params: { 
@@ -87,16 +83,6 @@ function Home() {
             lang: 'ind'
           },
         }
-        // 'https://newsapi.org/v2/everything?q=bitcoin',
-        // {
-        //   params: { 
-        //     pageSize: 10, 
-        //     page: pageNum, 
-        //     from: dateStart, 
-        //     to: dateEnd, 
-        //     apiKey:'pub_085d7819a6e94ba7b67ba113bb14e981'
-        //   },
-        // }
       );
       if(isFiltered) {
         setPosts(res.data.articles.results);

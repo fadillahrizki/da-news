@@ -7,9 +7,6 @@ import Settings from './screens/Settings.jsx'
 import Detail from './screens/Detail.jsx'
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
-  //   <App />
-  // </StrictMode>,
   <BrowserRouter>
     <Routes>
       <Route element={<Layout />}>
