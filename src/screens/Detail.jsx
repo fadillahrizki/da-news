@@ -47,7 +47,7 @@ function Detail() {
             <span key={index}>{author.name}{index < post.authors.length - 1 ? ', ' : ''}</span>
           )) : 'Unknown Author'}</span>
         </div>
-        <h6 className='text-gray-600 dark:text-gray-400 font-medium'>{post.source.title}</h6>
+        <a href={"https://"+post.source.uri} target='_blank' className='text-gray-600 dark:text-gray-400 font-medium cursor-pointer'>{post.source.title}</a>
         <h1 className="text-md md:text-xl font-medium text-gray-800 dark:text-white my-2">{post.title}</h1>
         <p className="text-gray-600 dark:text-gray-400">{post.body}</p>
       </div>
