@@ -23,7 +23,7 @@ function Header() {
       setPathTitle(paths[currentPath] || "Home");
     }
 
-    document.title = `${pathTitle} - Simple Infinite Scroll App`;
+    document.title = `${pathTitle} - Da News`;
   }, [currentPath, id, pathTitle, paths]);
 
   return (
